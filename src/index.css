@@ -1,0 +1,53 @@
+:root {
+  --bg:     #0d0d0d;
+  --bg2:    #141414;
+  --bg3:    #1c1c1c;
+  --border: #252525;
+  --border2:#333;
+  --text:   #b8b8b8;
+  --dim:    #555;
+  --bright: #eeeeee;
+  --red:    #c41a1a;
+  --red2:   #e02424;
+  --serif:  'Playfair Display', Georgia, serif;
+  --mono:   'IBM Plex Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+::-webkit-scrollbar-thumb:hover { background: var(--dim); }
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+.clickable {
+  cursor: pointer;
+  transition: color 0.1s;
+}
+.clickable:hover { color: var(--red2); }
+
+button {
+  font-family: var(--mono);
+  cursor: pointer;
+}
+button:disabled { opacity: 0.35; cursor: default; }
