@@ -112,15 +112,6 @@ export default function App() {
         }}>
           NYC Analog Screenings
         </h1>
-        <p style={{
-          color: 'var(--dim)',
-          fontSize: '11px',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          marginTop: '8px',
-        }}>
-          {data.length.toLocaleString()} screenings &nbsp;·&nbsp; 2021–2026 &nbsp;·&nbsp; Analog Film NYC
-        </p>
       </header>
 
       <StatsBar stats={stats} />
@@ -185,6 +176,36 @@ export default function App() {
           <RankingTab data={filteredData} groupBy="format" onFilter={setFilter} filterKey="format" />
         )}
       </div>
+
+      {/* ── Footer ─────────────────────────────────────────────────────────── */}
+      <footer style={{
+        borderTop: '1px solid var(--border)',
+        marginTop: '48px',
+        padding: '20px 0',
+        color: 'var(--dim)',
+        fontSize: '11px',
+        letterSpacing: '0.08em',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '12px',
+      }}>
+        <span>
+          Source:{' '}
+          <a href="https://analogfilmnyc.org/" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--dim)', textDecoration: 'underline' }}>
+            Analog Film NYC
+          </a>
+        </span>
+        <span>
+          Built by{' '}
+          <a href="https://frsantos.com" target="_blank" rel="noopener noreferrer"
+            style={{ color: 'var(--dim)', textDecoration: 'underline' }}>
+            Ryan Santos
+          </a>
+        </span>
+      </footer>
     </div>
   )
 }
