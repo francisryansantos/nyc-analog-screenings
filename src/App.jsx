@@ -5,6 +5,7 @@ import StatsBar   from './components/StatsBar'
 import FilterPanel from './components/FilterPanel'
 import BrowseTab  from './components/BrowseTab'
 import RankingTab from './components/RankingTab'
+import VenueDetailTab from './components/VenueDetailTab'
 
 // Preprocess once: add screening_year, normalise country list
 const data = rawData.map(r => ({
@@ -57,8 +58,15 @@ export default function App() {
   }, [])
 
   // Toggle a filter value (click again to clear)
+  // When setting a venue filter, auto-navigate to venue detail view
   const setFilter = useCallback((key, value) => {
-    setFilters(f => ({ ...f, [key]: f[key] === value ? undefined : value }))
+    setFilters(f => {
+      const cleared = f[key] === value
+      if (key === 'venue' && !cleared) {
+        setTab('venue_detail')
+      }
+      return { ...f, [key]: cleared ? undefined : value }
+    })
   }, [])
 
   const clearFilters = useCallback(() => setFilters({}), [])
@@ -174,6 +182,17 @@ export default function App() {
         )}
         {tab === 'formats' && (
           <RankingTab data={filteredData} groupBy="format" onFilter={setFilter} filterKey="format" />
+        )}
+        {tab === 'venue_detail' && filters.venue && (
+          <VenueDetailTab
+            data={filteredData}
+            venueName={filters.venue}
+            onFilter={setFilter}
+            onBack={() => {
+              setFilters(f => ({ ...f, venue: undefined }))
+              setTab('venues')
+            }}
+          />
         )}
       </div>
 
