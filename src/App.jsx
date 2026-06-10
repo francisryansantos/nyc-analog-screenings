@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import rawData from './data.json'
 import SearchBar  from './components/SearchBar'
-import StatsBar   from './components/StatsBar'
 import FilterPanel from './components/FilterPanel'
 import BrowseTab  from './components/BrowseTab'
 import RankingTab from './components/RankingTab'
+import VenuesGridTab from './components/VenuesGridTab'
 import VenueDetailTab from './components/VenueDetailTab'
 
 // Preprocess once: add screening_year, normalise country list
@@ -14,10 +14,10 @@ const data = rawData.map(r => ({
 }))
 
 const TABS = [
+  { id: 'venues',    label: 'Venues' },
   { id: 'browse',    label: 'Browse' },
   { id: 'films',     label: 'Top Films' },
   { id: 'directors', label: 'Top Directors' },
-  { id: 'venues',    label: 'Venues' },
   { id: 'countries', label: 'Countries' },
   { id: 'formats',   label: 'Formats' },
 ]
@@ -37,7 +37,7 @@ const ALL_OPTIONS = {
 export default function App() {
   const [query,   setQuery]   = useState('')
   const [filters, setFilters] = useState({})
-  const [tab,     setTab]     = useState('browse')
+  const [tab,     setTab]     = useState('venues')
   const searchRef = useRef(null)
 
   // / → focus search, Esc → clear everything
@@ -91,15 +91,6 @@ export default function App() {
     })
   }, [query, filters])
 
-  // ── Live stats ─────────────────────────────────────────────────────────────
-  const stats = useMemo(() => ({
-    screenings: filteredData.length,
-    films:      new Set(filteredData.map(r => r.film_title + '|' + r.year)).size,
-    directors:  new Set(filteredData.map(r => r.director).filter(Boolean)).size,
-    venues:     new Set(filteredData.map(r => r.venue).filter(Boolean)).size,
-    countries:  new Set(filteredData.flatMap(r => r.country ? r.country.split(', ') : [])).size,
-  }), [filteredData])
-
   const activeFilters = Object.entries(filters).filter(([, v]) => v)
 
   return (
@@ -110,19 +101,30 @@ export default function App() {
         padding: '36px 0 24px',
         marginBottom: '0',
       }}>
-        <h1 style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
-          fontWeight: 700,
-          color: 'var(--bright)',
-          letterSpacing: '-0.02em',
-          lineHeight: 1.1,
-        }}>
+        <h1
+          onClick={() => {
+            setTab('venues')
+            setFilters({})
+            setQuery('')
+          }}
+          style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
+            fontWeight: 700,
+            color: 'var(--bright)',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.1,
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            textDecorationColor: 'var(--border2)',
+            textUnderlineOffset: '6px',
+            textDecorationThickness: '2px',
+            display: 'inline-block',
+          }}
+        >
           NYC Analog Screenings
         </h1>
       </header>
-
-      <StatsBar stats={stats} />
 
       {/* ── Search ─────────────────────────────────────────────────────────── */}
       <div style={{ padding: '20px 0 0' }}>
@@ -175,7 +177,7 @@ export default function App() {
           <RankingTab data={filteredData} groupBy="director" onFilter={setFilter} filterKey="director" />
         )}
         {tab === 'venues' && (
-          <RankingTab data={filteredData} groupBy="venue" onFilter={setFilter} filterKey="venue" />
+          <VenuesGridTab data={filteredData} onFilter={setFilter} />
         )}
         {tab === 'countries' && (
           <RankingTab data={filteredData} groupBy="country" onFilter={setFilter} filterKey="country" />

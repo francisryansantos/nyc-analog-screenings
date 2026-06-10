@@ -95,8 +95,8 @@ export default function RankingTab({ data, groupBy, onFilter, filterKey }) {
             {/* Name + bar */}
             <div style={{ minWidth: 0, paddingRight: '16px' }}>
               <div style={{
-                fontFamily: isFilm ? 'var(--serif)' : 'var(--mono)',
-                fontSize: isFilm ? '14px' : '12px',
+                fontFamily: 'var(--serif)',
+                fontSize: '14px',
                 color: 'var(--bright)',
                 whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 marginBottom: '4px',
@@ -107,7 +107,8 @@ export default function RankingTab({ data, groupBy, onFilter, filterKey }) {
                 <div style={{
                   height: '100%',
                   width: `${barPct}%`,
-                  background: i === 0 ? 'var(--red)' : 'var(--border2)',
+                  background: 'var(--red)',
+                  opacity: i === 0 ? 1 : 0.5,
                   transition: 'width 0.2s',
                 }} />
               </div>
